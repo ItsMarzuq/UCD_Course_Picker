@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Course Selector</title>
+    <title>Module Selector</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
@@ -58,29 +58,37 @@
   <body class="bg-gray-50 text-gray-800">
     <div class="container mx-auto p-4 sm:p-6 lg:p-8">
       <header class="text-center mb-8">
-        <h1 class="text-4xl font-bold text-gray-900">Course Selector</h1>
+        <h1 class="text-4xl font-bold text-gray-900">Module Selector</h1>
         <p class="text-lg text-gray-600 mt-2">
-          Select course offerings to build your timetable.
+          Select module offerings to build your timetable.
         </p>
       </header>
 
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <!-- Courses List -->
+        <!-- Modules List -->
         <div class="lg:col-span-2">
-          <h2 class="text-2xl font-semibold mb-4 text-gray-900">
-            Available Courses
-          </h2>
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-2xl font-semibold text-gray-900">
+              Available Modules
+            </h2>
+            <button
+              id="add-custom-course-btn"
+              class="px-4 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-opacity-75"
+            >
+              Add Custom Module
+            </button>
+          </div>
           <!-- Search Bar -->
           <div class="mb-6">
             <input
               type="text"
               id="search-bar"
-              placeholder="Search by course name or code..."
+              placeholder="Search by module name or code..."
               class="w-full p-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
             />
           </div>
           <div id="course-list" class="space-y-4">
-            <!-- Themed course sections will be injected here by JavaScript -->
+            <!-- Themed module sections will be injected here by JavaScript -->
           </div>
         </div>
 
@@ -142,20 +150,23 @@
       </div>
     </div>
 
-    <!-- Add Timings Modal -->
+    <!-- Add/Edit Timings Modal -->
     <div
-      id="add-timing-modal"
+      id="timing-modal"
       class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden modal-overlay"
     >
       <div
         class="relative top-20 mx-auto p-5 border w-full max-w-md shadow-lg rounded-md bg-white"
       >
         <div class="mt-3 text-center">
-          <h3 class="text-lg leading-6 font-medium text-gray-900">
+          <h3
+            class="text-lg leading-6 font-medium text-gray-900"
+            id="timing-modal-title"
+          >
             Add New Timing
           </h3>
           <div class="mt-2 px-7 py-3">
-            <form id="add-timing-form">
+            <form id="timing-form">
               <input type="hidden" id="course-code-input" />
               <div class="mb-4 text-left">
                 <label
@@ -225,7 +236,105 @@
               Save
             </button>
             <button
-              id="close-modal-btn"
+              id="close-timing-modal-btn"
+              class="mt-3 px-4 py-2 bg-gray-200 text-gray-800 text-base font-medium rounded-md w-full shadow-sm hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Custom Module Modal -->
+    <div
+      id="custom-course-modal"
+      class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden modal-overlay"
+    >
+      <div
+        class="relative top-5 mx-auto p-5 border w-full max-w-lg shadow-lg rounded-md bg-white"
+      >
+        <div class="mt-3 text-center">
+          <h3
+            class="text-lg leading-6 font-medium text-gray-900"
+            id="custom-course-modal-title"
+          >
+            Add Custom Module
+          </h3>
+          <form id="custom-course-form" class="mt-4 space-y-4 text-left">
+            <input type="hidden" id="editing-course-code" />
+            <div>
+              <label
+                for="custom-course-name"
+                class="block text-sm font-medium text-gray-700"
+                >Module Name</label
+              >
+              <input
+                type="text"
+                id="custom-course-name"
+                class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                required
+              />
+            </div>
+            <div>
+              <label
+                for="custom-course-code"
+                class="block text-sm font-medium text-gray-700"
+                >Module Code</label
+              >
+              <input
+                type="text"
+                id="custom-course-code"
+                class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                required
+              />
+            </div>
+            <div>
+              <label
+                for="custom-course-credits"
+                class="block text-sm font-medium text-gray-700"
+                >Credits</label
+              >
+              <input
+                type="number"
+                id="custom-course-credits"
+                class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                required
+              />
+            </div>
+            <div>
+              <label
+                for="custom-course-semester"
+                class="block text-sm font-medium text-gray-700"
+                >Semester</label
+              >
+              <input
+                type="text"
+                id="custom-course-semester"
+                class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                required
+              />
+            </div>
+            <div id="custom-timings-container">
+              <!-- Timing fields will be added here -->
+            </div>
+            <button
+              type="button"
+              id="add-another-timing-btn"
+              class="text-sm text-indigo-600 hover:text-indigo-800 font-semibold"
+            >
+              + Add another timing
+            </button>
+          </form>
+          <div class="items-center px-4 py-3 mt-4">
+            <button
+              id="save-custom-course-btn"
+              class="px-4 py-2 bg-indigo-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-300"
+            >
+              Save Module
+            </button>
+            <button
+              id="close-custom-course-modal-btn"
               class="mt-3 px-4 py-2 bg-gray-200 text-gray-800 text-base font-medium rounded-md w-full shadow-sm hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300"
             >
               Cancel
@@ -236,7 +345,7 @@
     </div>
 
     <script>
-      // Default course data.
+      // Default module data.
       const courseDataString = `
         [
             {
@@ -363,7 +472,7 @@
         `;
 
       // Function to parse the raw data into a structured format
-      function parseCourses(dataString) {
+      function parseModules(dataString) {
         const allCourses = [];
         const themes = JSON.parse(dataString.trim());
 
@@ -395,7 +504,7 @@
               })
               .filter(Boolean);
 
-            if (code !== "N/A" && offerings.length > 0) {
+            if (code !== "N/A") {
               allCourses.push({
                 theme: themeObj.theme,
                 title: title,
@@ -416,7 +525,7 @@
       if (savedCourses) {
         courses = JSON.parse(savedCourses);
       } else {
-        courses = parseCourses(courseDataString);
+        courses = parseModules(courseDataString);
       }
 
       let selectedOfferings =
@@ -424,16 +533,34 @@
 
       const courseListContainer = document.getElementById("course-list");
       const searchBar = document.getElementById("search-bar");
-      const modal = document.getElementById("add-timing-modal");
-      const closeModalBtn = document.getElementById("close-modal-btn");
+      const timingModal = document.getElementById("timing-modal");
+      const closeTimingModalBtn = document.getElementById(
+        "close-timing-modal-btn"
+      );
       const saveTimingBtn = document.getElementById("save-timing-btn");
-      const addTimingForm = document.getElementById("add-timing-form");
+      const timingForm = document.getElementById("timing-form");
       const courseCodeInput = document.getElementById("course-code-input");
       const totalCreditsSpan = document.getElementById("total-credits");
       const clearAllBtn = document.getElementById("clear-all-btn");
       const timetableGrid = document.getElementById("timetable-grid");
       const timetableEvents = document.getElementById("timetable-events");
       const clashWarning = document.getElementById("clash-warning");
+      const addCustomCourseBtn = document.getElementById(
+        "add-custom-course-btn"
+      );
+      const customCourseModal = document.getElementById("custom-course-modal");
+      const closeCustomCourseModalBtn = document.getElementById(
+        "close-custom-course-modal-btn"
+      );
+      const saveCustomCourseBtn = document.getElementById(
+        "save-custom-course-btn"
+      );
+      const customTimingsContainer = document.getElementById(
+        "custom-timings-container"
+      );
+      const addAnotherTimingBtn = document.getElementById(
+        "add-another-timing-btn"
+      );
 
       // Render courses based on the provided list, grouped by theme
       function renderCourses(coursesToRender) {
@@ -450,7 +577,7 @@
 
         if (Object.keys(groupedByTheme).length === 0) {
           courseListContainer.innerHTML =
-            '<p class="text-gray-500 text-center">No courses found matching your search.</p>';
+            '<p class="text-gray-500 text-center">No modules found matching your search.</p>';
           return;
         }
 
@@ -477,12 +604,30 @@
               "course-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col";
             card.innerHTML = `
                         <div>
-                            <h3 class="text-xl font-bold text-gray-900 mt-1">${
-                              course.title
-                            }</h3>
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-xl font-bold text-gray-900 mt-1">${
+                                  course.title
+                                }</h3>
+                                <div class="flex space-x-2">
+                                    <button class="edit-custom-module-btn p-1 text-gray-400 hover:text-indigo-600" data-course-code="${
+                                      course.code
+                                    }">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.5L14.732 3.732z"></path></svg>
+                                    </button>
+                                    ${
+                                      course.theme === "Custom Modules"
+                                        ? `
+                                    <button class="delete-custom-module-btn p-1 text-gray-400 hover:text-red-600" data-course-code="${course.code}">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                    </button>
+                                    `
+                                        : ""
+                                    }
+                                </div>
+                            </div>
                             <p class="text-sm text-gray-500 mb-2">${
                               course.code
-                            } | Semester ${course.semester} | ${
+                            } | Semester ${course.semester || "N/A"} | ${
               course.credits
             } Credits</p>
                             ${
@@ -529,20 +674,20 @@
         renderCourses(filteredCourses);
       });
 
-      function showModal(courseCode) {
-        addTimingForm.reset();
+      function showTimingModal(courseCode) {
+        timingForm.reset();
         courseCodeInput.value = courseCode;
-        modal.classList.remove("hidden");
+        timingModal.classList.remove("hidden");
       }
 
-      function hideModal() {
-        modal.classList.add("hidden");
+      function hideTimingModal() {
+        timingModal.classList.add("hidden");
       }
 
-      closeModalBtn.addEventListener("click", hideModal);
-      modal.addEventListener("click", (e) => {
-        if (e.target === modal) {
-          hideModal();
+      closeTimingModalBtn.addEventListener("click", hideTimingModal);
+      timingModal.addEventListener("click", (e) => {
+        if (e.target === timingModal) {
+          hideTimingModal();
         }
       });
 
@@ -578,20 +723,19 @@
           );
           renderCourses(filteredCourses);
         }
-        hideModal();
+        hideTimingModal();
       });
 
       courseListContainer.addEventListener("click", (e) => {
         if (e.target.classList.contains("add-timing-btn")) {
           const courseCode = e.target.dataset.courseCode;
-          showModal(courseCode);
+          showTimingModal(courseCode);
         }
         const button = e.target.closest(".theme-toggle");
         if (button) {
           const grid = button.nextElementSibling;
           const isCollapsed = button.classList.contains("collapsed");
 
-          // Close all other sections
           document.querySelectorAll(".theme-toggle").forEach((otherButton) => {
             if (otherButton !== button) {
               otherButton.classList.add("collapsed");
@@ -599,7 +743,6 @@
             }
           });
 
-          // Toggle the clicked section
           if (isCollapsed) {
             grid.classList.remove("hidden");
             button.classList.remove("collapsed");
@@ -663,10 +806,19 @@
 
         if (uniqueSelectedCourses.length > 0) {
           summaryListContainer.innerHTML = `
-                    <h3 class="font-semibold text-gray-800 mt-4 text-md">Selected Courses:</h3>
+                    <h3 class="font-semibold text-gray-800 mt-4 text-md">Selected Modules:</h3>
                     <ul class="list-disc list-inside text-sm text-gray-600 space-y-1 mt-2">
                         ${uniqueSelectedCourses
-                          .map((course) => `<li>${course.title}</li>`)
+                          .map(
+                            (course) => `
+                            <li class="flex justify-between items-center">
+                                <span>${course.title}</span>
+                                <button class="remove-course-btn text-red-500 hover:text-red-700" data-course-code="${course.code}">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                </button>
+                            </li>
+                        `
+                          )
                           .join("")}
                     </ul>
                 `;
@@ -678,12 +830,11 @@
       // --- Timetable Logic ---
       const days = ["Mon", "Tues", "Wed", "Thurs", "Fri"];
       const dayToIndex = { Mon: 1, Tues: 2, Wed: 3, Thurs: 4, Fri: 5 };
-      const hourHeight = 60; // Corresponds to grid-template-rows height
+      const hourHeight = 60;
       const timetableStartHour = 8;
 
       function createTimetableGrid() {
         timetableGrid.innerHTML = "";
-        // Create Day Headers
         days.forEach((day, i) => {
           const dayHeader = document.createElement("div");
           dayHeader.className =
@@ -693,9 +844,7 @@
           timetableGrid.appendChild(dayHeader);
         });
 
-        // Create Time Slots and Grid Lines
         for (let i = 0; i < 12; i++) {
-          // 8am to 7pm
           const hour = timetableStartHour + i;
           const timeSlot = document.createElement("div");
           timeSlot.className =
@@ -730,7 +879,7 @@
           const endMinutes = timeToMinutes(time.endTime);
 
           const top =
-            (startMinutes / 60 - timetableStartHour) * hourHeight + 40; // +40 for header
+            (startMinutes / 60 - timetableStartHour) * hourHeight + 40;
           const height = ((endMinutes - startMinutes) / 60) * hourHeight;
           const dayIndex = dayToIndex[time.day];
 
@@ -746,7 +895,6 @@
           } * (${dayWidthCalc}) + 2px)`;
           eventEl.style.width = `calc(${dayWidthCalc} - 4px)`;
 
-          // Simple hash for color
           const colorHash = offering.code
             .split("")
             .reduce((acc, char) => char.charCodeAt(0) + ((acc << 5) - acc), 0);
@@ -763,7 +911,6 @@
           eventElements.push({ el: eventEl, offering: offering });
         });
 
-        // Clash detection
         for (let i = 0; i < eventElements.length; i++) {
           for (let j = i + 1; j < eventElements.length; j++) {
             const o1 = eventElements[i].offering.selectedOffering;
@@ -788,11 +935,169 @@
         eventElements.forEach((e) => timetableEvents.appendChild(e.el));
       }
 
+      // --- Custom Module Modal Logic ---
+      function showCustomCourseModal(courseToEdit = null) {
+        const form = document.getElementById("custom-course-form");
+        const modalTitle = document.getElementById("custom-course-modal-title");
+        const saveButton = document.getElementById("save-custom-course-btn");
+        const editingCodeInput = document.getElementById("editing-course-code");
+
+        form.reset();
+        customTimingsContainer.innerHTML = "";
+
+        if (courseToEdit) {
+          modalTitle.textContent = "Edit Custom Module";
+          saveButton.textContent = "Update Module";
+          editingCodeInput.value = courseToEdit.code;
+          document.getElementById("custom-course-name").value =
+            courseToEdit.title;
+          document.getElementById("custom-course-code").value =
+            courseToEdit.code;
+          document.getElementById("custom-course-credits").value =
+            courseToEdit.credits;
+          document.getElementById("custom-course-semester").value =
+            courseToEdit.semester;
+
+          courseToEdit.offerings.forEach((offering) => {
+            addTimingField(offering);
+          });
+        } else {
+          modalTitle.textContent = "Add Custom Module";
+          saveButton.textContent = "Save Module";
+          editingCodeInput.value = "";
+          addTimingField();
+        }
+
+        customCourseModal.classList.remove("hidden");
+      }
+
+      function hideCustomCourseModal() {
+        customCourseModal.classList.add("hidden");
+      }
+
+      function addTimingField(offering = null) {
+        const timingDiv = document.createElement("div");
+        timingDiv.className =
+          "custom-timing-block p-2 border border-gray-200 rounded-md space-y-2";
+        timingDiv.innerHTML = `
+                <input type="text" placeholder="Type (e.g., Lecture)" class="w-full p-2 border border-gray-300 rounded-md custom-timing-type" value="${
+                  offering ? offering.type : ""
+                }" required>
+                <select class="w-full p-2 border border-gray-300 rounded-md custom-timing-day" required>
+                    <option ${
+                      offering && offering.day === "Mon" ? "selected" : ""
+                    }>Mon</option>
+                    <option ${
+                      offering && offering.day === "Tues" ? "selected" : ""
+                    }>Tues</option>
+                    <option ${
+                      offering && offering.day === "Wed" ? "selected" : ""
+                    }>Wed</option>
+                    <option ${
+                      offering && offering.day === "Thurs" ? "selected" : ""
+                    }>Thurs</option>
+                    <option ${
+                      offering && offering.day === "Fri" ? "selected" : ""
+                    }>Fri</option>
+                </select>
+                <div class="flex gap-2">
+                    <input type="time" class="w-1/2 p-2 border border-gray-300 rounded-md custom-timing-start" value="${
+                      offering ? offering.startTime : ""
+                    }" required>
+                    <input type="time" class="w-1/2 p-2 border border-gray-300 rounded-md custom-timing-end" value="${
+                      offering ? offering.endTime : ""
+                    }" required>
+                </div>
+            `;
+        customTimingsContainer.appendChild(timingDiv);
+      }
+
+      addCustomCourseBtn.addEventListener("click", () =>
+        showCustomCourseModal()
+      );
+      closeCustomCourseModalBtn.addEventListener(
+        "click",
+        hideCustomCourseModal
+      );
+      addAnotherTimingBtn.addEventListener("click", () => addTimingField());
+
+      saveCustomCourseBtn.addEventListener("click", () => {
+        const name = document.getElementById("custom-course-name").value;
+        const code = document.getElementById("custom-course-code").value;
+        const credits = parseFloat(
+          document.getElementById("custom-course-credits").value
+        );
+        const semester = document.getElementById(
+          "custom-course-semester"
+        ).value;
+        const editingCode = document.getElementById(
+          "editing-course-code"
+        ).value;
+
+        if (!name || !code || !credits) {
+          return;
+        }
+
+        const offerings = [];
+        const timingDivs = customTimingsContainer.querySelectorAll(
+          ".custom-timing-block"
+        );
+        timingDivs.forEach((div, index) => {
+          const type = div.querySelector(".custom-timing-type").value;
+          const day = div.querySelector(".custom-timing-day").value;
+          const startTime = div.querySelector(".custom-timing-start").value;
+          const endTime = div.querySelector(".custom-timing-end").value;
+          if (type && day && startTime && endTime) {
+            offerings.push({
+              id: `${code}-${index}`,
+              type,
+              day,
+              startTime,
+              endTime,
+            });
+          }
+        });
+
+        if (offerings.length === 0) {
+          return;
+        }
+
+        if (editingCode) {
+          // Editing existing course
+          const courseIndex = courses.findIndex((c) => c.code === editingCode);
+          if (courseIndex > -1) {
+            courses[courseIndex] = {
+              ...courses[courseIndex],
+              title: name,
+              code: code,
+              credits: credits,
+              semester: semester,
+              offerings: offerings,
+            };
+          }
+        } else {
+          // Adding new course
+          const newCourse = {
+            theme: "Custom Modules",
+            title: name,
+            code: code,
+            credits: credits,
+            offerings: offerings,
+            comments: "",
+            semester: semester,
+          };
+          courses.push(newCourse);
+        }
+
+        localStorage.setItem("courses", JSON.stringify(courses));
+        renderCourses(courses);
+        hideCustomCourseModal();
+      });
+
       function initializeApp() {
         renderCourses(courses);
         createTimetableGrid();
 
-        // Restore checkbox state from localStorage
         document
           .querySelectorAll('input[type="checkbox"]')
           .forEach((checkbox) => {
@@ -809,6 +1114,56 @@
         updateSummary();
         updateTimetable();
       }
+
+      // --- Event Delegation for dynamic elements ---
+      document.body.addEventListener("click", (e) => {
+        if (e.target.closest(".remove-course-btn")) {
+          const courseCode =
+            e.target.closest(".remove-course-btn").dataset.courseCode;
+          selectedOfferings = selectedOfferings.filter(
+            (so) => so.code !== courseCode
+          );
+          localStorage.setItem(
+            "selectedOfferings",
+            JSON.stringify(selectedOfferings)
+          );
+
+          document
+            .querySelectorAll(`input[data-course-code="${courseCode}"]`)
+            .forEach((checkbox) => {
+              checkbox.checked = false;
+            });
+
+          updateSummary();
+          updateTimetable();
+        }
+
+        if (e.target.closest(".edit-custom-module-btn")) {
+          const courseCode = e.target.closest(".edit-custom-module-btn").dataset
+            .courseCode;
+          const courseToEdit = courses.find((c) => c.code === courseCode);
+          if (courseToEdit) {
+            showCustomCourseModal(courseToEdit);
+          }
+        }
+
+        if (e.target.closest(".delete-custom-module-btn")) {
+          const courseCode = e.target.closest(".delete-custom-module-btn")
+            .dataset.courseCode;
+          courses = courses.filter((c) => c.code !== courseCode);
+          selectedOfferings = selectedOfferings.filter(
+            (so) => so.code !== courseCode
+          );
+          localStorage.setItem("courses", JSON.stringify(courses));
+          localStorage.setItem(
+            "selectedOfferings",
+            JSON.stringify(selectedOfferings)
+          );
+          renderCourses(courses);
+          updateSummary();
+          updateTimetable();
+        }
+      });
 
       // --- Initial Setup ---
       initializeApp();
